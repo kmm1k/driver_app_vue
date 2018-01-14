@@ -40,4 +40,22 @@
   </v-app>
 </template>
 
+<script>
+  import Meta from 'mixins/meta'
+  import { mapState } from 'vuex';
+  export default {
+    mixins: [Meta],
+    data () {
+      return {
+        fixed: false,
+
+        title: 'Vuetify.js'
+      };
+    },
+    computed: mapState({
+      error: state => state.error,
+    }),
+  }
+</script>
+
 

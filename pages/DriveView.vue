@@ -1,33 +1,33 @@
-<template>
+<template v-if="loading">
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
 
 
-            <v-flex
-              xs12
-              sm6
-              offset-sm3
-              md8
-              offset-md2
-              text-xs-center
-              layout
-              align-center
-              justify-center
-              class="pa-4"
+        <v-flex
+          xs12
+          sm6
+          offset-sm3
+          md8
+          offset-md2
+          text-xs-center
+          layout
+          align-center
+          justify-center
+          class="pa-4"
+        >
+          <v-badge overlap color="green">
+            <span slot="badge" v-html="item.seats"></span>
+            <v-avatar
+              :tile="tile"
+              :size="avatarSize"
+              class="grey lighten-4"
             >
-              <v-badge overlap color="green">
-                <span slot="badge" v-html="item.spots"></span>
-                <v-avatar
-                  :tile="tile"
-                  :size="avatarSize"
-                  class="grey lighten-4"
-                >
-                  <img v-bind:src="item.avatar" alt="avatar">
-                </v-avatar>
-              </v-badge>
+              <img v-bind:src="item.owner.picture" alt="avatar">
+            </v-avatar>
+          </v-badge>
 
-            </v-flex>
+        </v-flex>
 
 
         <v-list two-line>
@@ -36,8 +36,8 @@
               <v-icon color="indigo">info</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title >{{item.start}} - {{item.end}}</v-list-tile-title>
-              <v-list-tile-sub-title>Kohti: {{item.spots}}</v-list-tile-sub-title>
+              <v-list-tile-title>{{item.start}} - {{item.end}}</v-list-tile-title>
+              <v-list-tile-sub-title>Kohti: {{item.seats}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider inset></v-divider>
@@ -52,18 +52,19 @@
           </v-list-tile>
 
 
-
           <v-btn v-if="!subscribed"
-            :loading="loading3"
-            :disabled="loading3"
-            class="white--text"
-            @click="subscribe()" block large color="success" >Liitu sõiduga</v-btn>
+                 :loading="loading3"
+                 :disabled="loading3"
+                 class="white--text"
+                 @click="subscribe()" block large color="success">Liitu sõiduga
+          </v-btn>
           <v-btn v-if="subscribed"
-            :loading="loading3"
-            :disabled="loading3"
-            class="white--text"
-            @click="unsubscribe()" block large color="primary" >Eemalda end sõidult</v-btn>
-          <v-btn @click="goBack()" block large color="error" >Tagasi</v-btn>
+                 :loading="loading3"
+                 :disabled="loading3"
+                 class="white--text"
+                 @click="unsubscribe()" block large color="primary">Eemalda end sõidult
+          </v-btn>
+          <v-btn @click="goBack()" block large color="error">Tagasi</v-btn>
 
 
         </v-list>
@@ -84,6 +85,7 @@
 
 
 <script>
+  import constants from "../assets/constants"
   export default {
     data: () => ({
       slider: 150,
@@ -95,18 +97,31 @@
       timeout: 6000,
       loader: null,
       loading3: false,
-      subscribed: false
+      subscribed: false,
+      loading: true
     }),
-
+    asyncData ({store, route}) {
+      // return the Promise from the action
+      return store.dispatch('fetchItem', route.params.id)
+    },
     computed: {
       avatarSize () {
         return `${this.slider}px`
+      },
+      // display the item from store state.
+      item () {
+        return this.$store.state.items[this.$route.params.id]
       }
+    },
+    beforeRouteEnter (to, from, next) {
+      this.fetchData(function () {
+        next()
+      })
     },
     created () {
       // fetch the data when the view is created and the data is
       // already being observed
-      this.fetchData()
+
     },
     watch: {
       // call again the method if the route changes
@@ -121,14 +136,17 @@
       }
     },
     methods: {
-      fetchData () {
+      fetchData (done) {
         this.loading = true
-        this.$http.get('/static/responses/drive' + this.$route.params[0] + '.json').then(response => {
+        this.$http.get(constants.serverIp + "drive/" + this.$route.params[0] + '').then(response => {
           this.loading = false
           this.item = response.body;
+          console.log(response.body)
+          done()
         }, response => {
           this.loading = false
           this.error = response.toString()
+          done()
         });
 
       },

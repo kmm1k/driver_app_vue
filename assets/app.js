@@ -29,8 +29,8 @@ import Components from 'components/_index'
 import Vuelidate from 'vuelidate'
 import $http from 'vue-resource'
 
-import { createStore } from 'store/index'
-import { createRouter } from 'router/index'
+import { createStore } from '../store/index'
+import { createRouter } from '../router/index'
 import { sync } from 'vuex-router-sync'
 
 
@@ -70,6 +70,7 @@ Object.keys(Components).forEach(key => {
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
 export function createApp (ssrContext) {
+  console.log("createApp")
   // create store and router instances
   const store = createStore()
   const router = createRouter()

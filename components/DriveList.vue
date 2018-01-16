@@ -28,11 +28,19 @@
     methods: {
       updateList: function () {
         this.$store.dispatch('getDrives');
+      },
+      showDrive: function (event, x) {
+        // `this` inside methods points to the Vue instance
+        this.$router.push(
+          {
+            path: '/drive/' + x,
+          }
+        )
       }
     },
     computed: mapState({
       items: state => state.items,
-    }),
+    })
   }
 
 </script>

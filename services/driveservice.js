@@ -20,4 +20,13 @@ export default {
       });
     });
   },
+  getFacebookLogin() {
+    console.log("getFacebookLogin")
+    return new Promise((resolve, reject) => {
+      Vue.http.get(constants.serverIp + 'auth/facebook').then((resp) => {
+        const page = resp.body;
+        resolve(page);
+      });
+    });
+  },
 };

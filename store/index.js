@@ -11,6 +11,7 @@ export function createStore() {
       items: [],
       item: {},
       error: null,
+      facebook: {},
     },
 
     actions: {
@@ -28,9 +29,19 @@ export function createStore() {
           (err) => commit('updateError', err)
         );
       },
+      loginToFacebook({commit}) {
+        console.log("loginToFacebook")
+        return driveService.getFacebookLogin().then(
+          (item) => commit('facebookLogin', item),
+          (err) => commit('updateError', err)
+        );
+      },
     },
 
     mutations: {
+      facebookLogin (state, item) {
+        state.facebook = item
+      },
       setItem (state, {id, item}) {
         //Vue.set(state.items, id, item)
         state.item = item;

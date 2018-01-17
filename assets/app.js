@@ -28,6 +28,7 @@ import App from './App.vue'
 import Components from 'components/_index'
 import Vuelidate from 'vuelidate'
 import $http from 'vue-resource'
+import VueBus from 'vue-bus';
 
 import { createStore } from '../store/index'
 import { createRouter } from '../router/index'
@@ -59,7 +60,8 @@ Vue.use(Vuetify, {
     VSelect,
     VCheckbox,
     VDatePicker,
-    VDialog
+    VDialog,
+    VueBus
   }
 })
 Vue.use(Vuelidate)

@@ -69,9 +69,11 @@
           successfully subscribed
           <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
         </v-snackbar>
+        <login></login>
       </v-card>
     </v-flex>
   </v-layout>
+
 </template>
 
 
@@ -96,6 +98,7 @@
         console.log(route)
       this.id = route.params[0]
       // return the Promise from the action
+      store.dispatch('loginToFacebook');
       return store.dispatch('fetchItem', route.params[0])
     },
     computed: mapState({
@@ -119,17 +122,24 @@
       },
       subscribe() {
         this.loader = 'loading3'
-        this.snackbar = true
         this.loading = true
-        this.subscribed = true
-        this.$http.post(constants.serverIp + 'subscribe', {driveId: this.item._id}).then(response => {
+        this.$bus.$emit('facebook-login', true)
+        /*this.$http.get(constants.serverIp + 'auth/facebook').then(response => {
+            console.log(response)
+        }, response => {
+
+          this.error = response.toString()
+        })*/
+        /*this.$http.post(constants.serverIp + 'subscribe', {driveId: this.item._id}).then(response => {
           this.loading = false
           //TODO: replace with store update
+          this.subscribed = true
+          this.snackbar = true
           this.item = response.body;
         }, response => {
           this.loading = false
           this.error = response.toString()
-        });
+        });*/
       },
       unsubscribe() {
         this.loader = 'loading3'

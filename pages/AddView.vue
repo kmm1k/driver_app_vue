@@ -71,9 +71,9 @@
             :loading="loading3"
             :disabled="loading3"
             class="white--text"
-            @click="add()" block large color="success">Lisa sõit
+            @click="add()" block large color="success">
+            <v-icon color="white">near_me</v-icon>
           </v-btn>
-          <v-btn @click="goBack()" block large color="error">Tagasi</v-btn>
         </form>
       </v-card>
     </v-flex>

@@ -1,7 +1,7 @@
 <template v-if="loading">
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card>
+      <v-card class="pa-3">
         <v-flex
           xs12
           sm6
@@ -28,17 +28,26 @@
         <v-list two-line>
           <v-list-tile @click="" disabled>
             <v-list-tile-action>
-              <v-icon color="indigo">info</v-icon>
+              <v-icon color="black">place</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>{{item.start}} - {{item.end}}</v-list-tile-title>
               <v-list-tile-sub-title>Kohti: {{item.seats-(item.users.length-1)}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
+          <v-list-tile @click="" disabled>
+            <v-list-tile-action>
+              <v-icon color="black">access_time</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>{{item.date}} </v-list-tile-title>
+              <v-list-tile-sub-title>vb kunagi kommentaar</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
           <v-divider inset></v-divider>
           <v-list-tile @click="">
             <v-list-tile-action>
-              <v-icon color="indigo">chat</v-icon>
+              <img src="/static/fb.png" style="width: 25px;" alt="messenger logo">
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title v-html="item.owner.name"></v-list-tile-title>
@@ -49,15 +58,17 @@
                  :loading="loading3"
                  :disabled="loading3"
                  class="white--text"
-                 @click="subscribe()" block large color="success">Liitu sõiduga
+                 @click="subscribe()" block large color="success">
+
+            <v-icon color="white">check</v-icon>
           </v-btn>
           <v-btn v-if="subscribed"
                  :loading="loading3"
                  :disabled="loading3"
                  class="white--text"
-                 @click="unsubscribe()" block large color="primary">Eemalda end sõidult
+                 @click="unsubscribe()" block large color="primary">
+            <v-icon color="white">cancel</v-icon>
           </v-btn>
-          <v-btn @click="goBack()" block large color="error">Tagasi</v-btn>
         </v-list>
         <v-snackbar
           :timeout="timeout"
